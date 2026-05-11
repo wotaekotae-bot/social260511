@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중학 사회 - 유럽의 자연환경과 도시 활동지</title>
+    <!-- 사용 전 교사 안내문(teacher_setup_guide.md)을 먼저 확인하고 SCRIPT_URL을 입력하세요. -->
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #a5b4fc;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --accent-color: #f43f5e;
+        }
+
+        * { box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+        header { border-bottom: 2px solid var(--secondary-color); padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 1.5rem; color: var(--primary-color); }
+        #timer { font-weight: bold; color: var(--accent-color); font-size: 1.1rem; }
+
+        .student-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 30px; background: #f1f5f9; padding: 20px; border-radius: 12px; }
+        .student-info input { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; width: 100%; }
+
+        .section-title { font-size: 1.2rem; border-left: 5px solid var(--primary-color); padding-left: 10px; margin: 40px 0 20px; color: var(--primary-color); }
+        .activity-box { margin-bottom: 25px; }
+        .activity-box label { display: block; margin-bottom: 10px; font-weight: 600; }
+        textarea { width: 100%; min-height: 100px; padding: 15px; border: 1px solid #cbd5e1; border-radius: 12px; resize: vertical; transition: border-color 0.3s; }
+        textarea:focus { outline: none; border-color: var(--primary-color); }
+
+        .image-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 30px; text-align: center; color: var(--text-sub); margin-bottom: 15px; }
+
+        .quiz-item { background: #fdfdfd; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .quiz-options label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        .dashboard { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; padding: 15px 20px; display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; gap: 10px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 100; }
+        .progress-container { width: 100%; max-width: 300px; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+        #progress-bar { height: 100%; background: var(--primary-color); width: 0%; transition: width 0.3s; }
+        .stats { font-size: 0.9rem; color: var(--text-sub); }
+        .btn-group { display: flex; gap: 10px; }
+        button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: transform 0.2s, opacity 0.2s; }
+        .btn-submit { background: var(--primary-color); color: white; }
+        .btn-reset { background: #94a3b8; color: white; }
+        button:active { transform: scale(0.95); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 600px) { .container { padding: 20px; margin-bottom: 100px; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🌍 대단원 Ⅲ. 유럽 : 자연환경과 도시</h1>
+        <div id="timer">00:00:00</div>
+    </header>
+
+    <div class="student-info">
+        <input type="number" id="grade" placeholder="학년" min="1" max="3">
+        <input type="number" id="class" placeholder="반" min="1">
+        <input type="number" id="number" placeholder="번호" min="1">
+        <input type="text" id="name" placeholder="이름">
+    </div>
+
+    <div class="section-title">학습 활동 1: 유럽의 지형과 기후 분석</div>
+    <div class="activity-box">
+        <div class="image-placeholder">
+            [자료: 교과서 54쪽 유럽 기후 그래프 - 런던, 로마, 모스크바 비교]
+        </div>
+        <label>1. 위 자료를 참고하여 서부 유럽(런던)과 남부 유럽(로마)의 기후 특성 차이를 강수량과 기온 측면에서 서술하세요.</label>
+        <textarea id="activity1" class="auto-save" placeholder="내용을 입력하세요..."></textarea>
+    </div>
+
+    <div class="section-title">학습 활동 2: 유럽의 주요 도시 탐구</div>
+    <div class="activity-box">
+        <label>2. 런던의 타워 브리지와 같은 상징물이 도시 이미지 형성에 미치는 영향에 대해 자신의 생각을 적어보세요.</label>
+        <textarea id="activity2" class="auto-save" placeholder="내용을 입력하세요..."></textarea>
+    </div>
+
+    <div class="section-title">학습 활동 3: 지도로 보는 유럽</div>
+    <div class="activity-box">
+        <div class="image-placeholder">
+            [자료: 교과서 52쪽 유럽의 국가 및 주요 도시 지도]
+        </div>
+        <label>3. 알프스산맥을 경계로 유럽의 북부와 남부가 나누어집니다. 이러한 지형적 특징이 유럽 내 국가 간 교류나 문화 형성에 어떤 영향을 주었을지 유추해 보세요.</label>
+        <textarea id="activity3" class="auto-save" placeholder="내용을 입력하세요..."></textarea>
+    </div>
+
+    <div class="section-title">형성 평가 (자동 채점)</div>
+    <div id="quiz-container">
+        <!-- Quiz 1 -->
+        <div class="quiz-item">
+            <p><strong>Q1. 다음 중 유럽의 기후에 대한 설명으로 옳은 것은?</strong></p>
+            <div class="quiz-options">
+                <label><input type="radio" name="quiz1" value="1"> 서부 유럽은 지중해성 기후가 나타나 여름이 고온 건조하다.</label>
+                <label><input type="radio" name="quiz1" value="2"> 남부 유럽은 편서풍의 영향으로 연교차가 작다.</label>
+                <label><input type="radio" name="quiz1" value="3"> 서부 유럽은 일 년 내내 비가 고르게 내리는 서안 해양성 기후가 나타난다.</label>
+                <label><input type="radio" name="quiz1" value="4"> 동부 유럽은 북부 유럽보다 겨울이 온화하다.</label>
+            </div>
+        </div>
+        <!-- Quiz 2 -->
+        <div class="quiz-item">
+            <p><strong>Q2. 러시아의 광활한 침엽수림 지대를 일컫는 명칭은?</strong></p>
+            <input type="text" id="quiz2" class="auto-save" placeholder="단답형 정답 입력" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+        </div>
+        <!-- Quiz 3 -->
+        <div class="quiz-item">
+            <p><strong>Q3. 남부 유럽에서 여름철 고온 건조한 기후에 적응하기 위해 발달한 농업 방식은?</strong></p>
+            <div class="quiz-options">
+                <label><input type="radio" name="quiz3" value="1"> 수목 농업</label>
+                <label><input type="radio" name="quiz3" value="2"> 이동식 화전 농업</label>
+                <label><input type="radio" name="quiz3" value="3"> 기업적 곡물 재배</label>
+                <label><input type="radio" name="quiz3" value="4"> 대규모 목축업</label>
+            </div>
+        </div>
+        <!-- Quiz 4 -->
+        <div class="quiz-item">
+            <p><strong>Q4. 유럽 연합(EU)의 상징인 단일 화폐의 명칭은 무엇입니까?</strong></p>
+            <input type="text" id="quiz4" class="auto-save" placeholder="단답형 정답 입력" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+        </div>
+        <!-- Quiz 5 -->
+        <div class="quiz-item">
+            <p><strong>Q5. 영국과 프랑스 사이의 바다를 가로질러 두 나라를 연결하는 해저 터널이 지나는 곳은?</strong></p>
+            <div class="quiz-options">
+                <label><input type="radio" name="quiz5" value="1"> 지중해</label>
+                <label><input type="radio" name="quiz5" value="2"> 도버 해협</label>
+                <label><input type="radio" name="quiz5" value="3"> 북해</label>
+                <label><input type="radio" name="quiz5" value="4"> 발트해</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">오늘의 배움 성찰</div>
+    <div class="activity-box">
+        <label>수업을 통해 새롭게 알게 된 점이나 더 궁금한 점을 50자 이상 작성하세요.</label>
+        <textarea id="reflection" class="auto-save" placeholder="배운 내용을 정리해 봅시다..."></textarea>
+        <p id="char-count" style="text-align: right; font-size: 0.8rem; color: var(--text-sub);">0 / 50자</p>
+    </div>
+
+    <div style="height: 100px;"></div>
+</div>
+
+<div class="dashboard">
+    <div class="stats">
+        완료도: <span id="progress-text">0%</span>
+        <div class="progress-container"><div id="progress-bar"></div></div>
+    </div>
+    <div class="stats">
+        퀴즈: <span id="quiz-score">0</span> / 5
+    </div>
+    <div class="btn-group">
+        <button class="btn-reset" onclick="resetWorksheet()">초기화</button>
+        <button class="btn-submit" id="submit-btn" onclick="submitWorksheet()">활동지 제출</button>
+    </div>
+</div>
+
+<script>
+    // ---------------------------------------------------------
+    // 교사 설정: 여기에 웹 앱 URL을 붙여넣으세요.
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkkQHgha9_jsf-b_9RxAdIaiF17jj7HuYimkIz_ssv5Uj4L-KiXV-ri9k42TzmN3KsYA/exec'; 
+    // ---------------------------------------------------------
+
+    const ANSWERS = {
+        quiz1: "3",
+        quiz2: ["타이가", "taiga"],
+        quiz3: "1",
+        quiz4: ["유로", "euro", "유로화"],
+        quiz5: "2"
+    };
+
+    // 자동 저장 기능
+    document.querySelectorAll('.auto-save, input[type=radio]').forEach(el => {
+        el.addEventListener('input', () => {
+            saveData();
+            updateDashboard();
+        });
+    });
+
+    function saveData() {
+        const data = {};
+        document.querySelectorAll('input, textarea').forEach(el => {
+            if(el.type === 'radio') {
+                if(el.checked) data[el.name] = el.value;
+            } else {
+                data[el.id] = el.value;
+            }
+        });
+        localStorage.setItem('worksheet_data', JSON.stringify(data));
+    }
+
+    function loadData() {
+        const data = JSON.parse(localStorage.getItem('worksheet_data'));
+        if(!data) return;
+        document.querySelectorAll('input, textarea').forEach(el => {
+            if(el.type === 'radio') {
+                if(data[el.name] === el.value) el.checked = true;
+            } else if(data[el.id]) {
+                el.value = data[el.id];
+            }
+        });
+        updateDashboard();
+    }
+
+    function updateDashboard() {
+        // 진척도 계산
+        const inputs = ['activity1', 'activity2', 'activity3', 'reflection'];
+        let completed = 0;
+        inputs.forEach(id => { if(document.getElementById(id).value.trim().length > 5) completed++; });
+        
+        const quizCount = document.querySelectorAll('input[name^="quiz"]:checked').length + 
+                        (document.getElementById('quiz2').value.length > 0 ? 1 : 0) +
+                        (document.getElementById('quiz4').value.length > 0 ? 1 : 0);
+        
+        const totalSteps = 10; // 학번/이름(1) + 활동3 + 퀴즈5 + 성찰1
+        const currentProgress = ((completed + (quizCount > 0 ? 1 : 0)) / 5) * 100;
+        
+        document.getElementById('progress-bar').style.width = currentProgress + '%';
+        document.getElementById('progress-text').textContent = Math.round(currentProgress) + '%';
+        
+        // 퀴즈 채점
+        let score = 0;
+        if(document.querySelector('input[name="quiz1"]:checked')?.value === ANSWERS.quiz1) score++;
+        if(ANSWERS.quiz2.includes(document.getElementById('quiz2').value.trim())) score++;
+        if(document.querySelector('input[name="quiz3"]:checked')?.value === ANSWERS.quiz3) score++;
+        if(ANSWERS.quiz4.includes(document.getElementById('quiz4').value.trim())) score++;
+        if(document.querySelector('input[name="quiz5"]:checked')?.value === ANSWERS.quiz5) score++;
+        
+        document.getElementById('quiz-score').textContent = score;
+
+        // 성찰 글자 수
+        const reflection = document.getElementById('reflection').value;
+        document.getElementById('char-count').textContent = reflection.length + ' / 50자';
+        document.getElementById('char-count').style.color = reflection.length >= 50 ? 'green' : 'var(--accent-color)';
+    }
+
+    async function submitWorksheet() {
+        if(!SCRIPT_URL || SCRIPT_URL === '여기에_웹앱_URL_붙여넣기') {
+            alert("교사 설정 필요: SCRIPT_URL이 설정되지 않았습니다.");
+            return;
+        }
+
+        const name = document.getElementById('name').value;
+        const reflection = document.getElementById('reflection').value;
+
+        if(!name) { alert("이름을 입력해주세요."); return; }
+        if(reflection.length < 50) { alert("성찰 내용을 50자 이상 작성해주세요."); return; }
+
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.textContent = "전송 중...";
+
+        const payload = {
+            timestamp: new Date().toLocaleString('ko-KR'),
+            grade: document.getElementById('grade').value,
+            class: document.getElementById('class').value,
+            number: document.getElementById('number').value,
+            name: name,
+            activity1: document.getElementById('activity1').value,
+            activity2: document.getElementById('activity2').value,
+            activity3: document.getElementById('activity3').value,
+            quizScore: document.getElementById('quiz-score').textContent,
+            reflection: reflection,
+            elapsedTime: document.getElementById('timer').textContent
+        };
+
+        // 백업 저장
+        localStorage.setItem('last_submit_backup', JSON.stringify(payload));
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            alert("성공적으로 제출되었습니다! 다음 학생을 위해 초기화합니다.");
+            resetWorksheet(true);
+        } catch (e) {
+            alert("전송 오류가 발생했습니다. 하지만 브라우저에 백업되었습니다.");
+            console.error(e);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "활동지 제출";
+        }
+    }
+
+    function resetWorksheet(force = false) {
+        if(!force && !confirm("정말로 초기화할까요? 작성한 내용이 모두 사라집니다.")) return;
+        localStorage.removeItem('worksheet_data');
+        location.reload();
+    }
+
+    // 타이머
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const s = String(seconds % 60).padStart(2, '0');
+        document.getElementById('timer').textContent = `${h}:${m}:${s}`;
+    }, 1000);
+
+    window.onload = loadData;
+</script>
+
+</body>
+</html>
